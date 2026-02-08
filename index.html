@@ -35,6 +35,7 @@ body {
 
 h1, p {
   color: #fff;
+  line-height: 1.6;
 }
 
 button {
@@ -57,6 +58,13 @@ button {
   transition: all 0.3s ease;
 }
 
+.tap {
+  margin-top: 20px;
+  font-size: 14px;
+  opacity: 0.8;
+  color: #fff;
+}
+
 .heart {
   position: fixed;
   bottom: -20px;
@@ -67,12 +75,6 @@ button {
 @keyframes floatUp {
   0% { transform: translateY(0); opacity: 1; }
   100% { transform: translateY(-100vh); opacity: 0; }
-}
-
-.tap {
-  margin-top: 20px;
-  font-size: 14px;
-  opacity: 0.8;
 }
 
 .slideshow img {
@@ -92,15 +94,19 @@ button {
   <button id="noBtn">No 🙈</button>
 </div>
 
-<!-- SCREEN 2 -->
+<!-- SCREEN 2 (PARAGRAPH) -->
 <div class="screen" id="screen2">
   <p>
-    Zainy, I am not very good with English,  
-    but my feelings for you are very real.  
-    You make me smile without trying,  
-    and talking to you makes my day better.  
-    I don’t need anything perfect,  
-    I just want you.
+    Zainy, I am not very good with words,  
+    but my feelings for you are true.  
+    You make me smile without even trying,  
+    and talking to you makes my day feel better.  
+
+    I don’t promise anything fancy,  
+    I just promise to care for you,  
+    to be honest with you,  
+    and to choose you every single day.  
+    This is from my heart.
   </p>
   <div class="tap">(Tap anywhere)</div>
 </div>
@@ -115,13 +121,13 @@ button {
 <div class="screen" id="screen4">
   <p>
     Sorry this came a little late 😅  
-    I had some technical issues,  
+    There were some technical issues,  
     but my feelings were always on time.
   </p>
   <div class="tap">(Tap anywhere)</div>
 </div>
 
-<!-- SCREEN 5 -->
+<!-- SCREEN 5 (SLIDESHOW) -->
 <div class="screen" id="screen5">
   <div class="slideshow">
     <img src="photo1.jpeg">
@@ -150,7 +156,10 @@ const cuteTexts = [
 
 let shrink = 1;
 let textIndex = 0;
+let current = 1;
+let allowTap = false;
 
+// NO button behaviour
 noBtn.addEventListener('mouseover', () => {
   shrink -= 0.1;
   noBtn.style.transform = `scale(${shrink})`;
@@ -158,21 +167,27 @@ noBtn.addEventListener('mouseover', () => {
   textIndex++;
 });
 
-yesBtn.onclick = () => {
+// YES button behaviour
+yesBtn.onclick = (e) => {
+  e.stopPropagation(); // IMPORTANT FIX
   switchScreen(1, 2);
   startHearts();
+  allowTap = true;
 };
 
+// Page tap navigation
 document.body.addEventListener('click', () => {
+  if (!allowTap) return;
+
   if (current === 2) switchScreen(2, 3);
   else if (current === 3) switchScreen(3, 4);
   else if (current === 4) {
     switchScreen(4, 5);
     startSlideshow();
+    allowTap = false;
   }
 });
 
-let current = 1;
 function switchScreen(from, to) {
   document.getElementById(`screen${from}`).classList.remove('active');
   document.getElementById(`screen${to}`).classList.add('active');
