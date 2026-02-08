@@ -26,7 +26,7 @@ body {
   text-align: center;
   padding: 20px;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
 }
 
 .active {
@@ -39,7 +39,7 @@ h1, p {
 }
 
 button {
-  padding: 12px 22px;
+  padding: 12px 24px;
   font-size: 16px;
   border: none;
   border-radius: 30px;
@@ -59,16 +59,15 @@ button {
 }
 
 .tap {
-  margin-top: 20px;
+  margin-top: 18px;
   font-size: 14px;
-  opacity: 0.8;
-  color: #fff;
+  opacity: 0.85;
 }
 
 .heart {
   position: fixed;
   bottom: -20px;
-  font-size: 20px;
+  font-size: 22px;
   animation: floatUp 5s linear infinite;
 }
 
@@ -79,7 +78,7 @@ button {
 
 .slideshow img {
   width: 100%;
-  border-radius: 20px;
+  border-radius: 18px;
   display: none;
 }
 </style>
@@ -94,128 +93,5 @@ button {
   <button id="noBtn">No 🙈</button>
 </div>
 
-<!-- SCREEN 2 (PARAGRAPH) -->
-<div class="screen" id="screen2">
-  <p>
-    Zainy, I am not very good with words,  
-    but my feelings for you are true.  
-    You make me smile without even trying,  
-    and talking to you makes my day feel better.  
-
-    I don’t promise anything fancy,  
-    I just promise to care for you,  
-    to be honest with you,  
-    and to choose you every single day.  
-    This is from my heart.
-  </p>
-  <div class="tap">(Tap anywhere)</div>
-</div>
-
-<!-- SCREEN 3 -->
-<div class="screen" id="screen3">
-  <h1>HAPPY PROPOSE DAY 💖</h1>
-  <div class="tap">(Tap anywhere)</div>
-</div>
-
-<!-- SCREEN 4 -->
-<div class="screen" id="screen4">
-  <p>
-    Sorry this came a little late 😅  
-    There were some technical issues,  
-    but my feelings were always on time.
-  </p>
-  <div class="tap">(Tap anywhere)</div>
-</div>
-
-<!-- SCREEN 5 (SLIDESHOW) -->
-<div class="screen" id="screen5">
-  <div class="slideshow">
-    <img src="photo1.jpeg">
-    <img src="photo2.jpeg">
-    <img src="photo3.jpeg">
-    <img src="photo4.jpeg">
-    <img src="photo5.jpeg">
-    <img src="photo6.jpeg">
-    <img src="photo7.jpeg">
-    <img src="photo8.jpeg">
-    <img src="photo9.jpeg">
-  </div>
-</div>
-
-<script>
-const noBtn = document.getElementById('noBtn');
-const yesBtn = document.getElementById('yesBtn');
-
-const cuteTexts = [
-  "Nice try 😏",
-  "Still no? 🥺",
-  "Come on Zainy 💖",
-  "You know the answer 😌",
-  "Just say yes 🙈"
-];
-
-let shrink = 1;
-let textIndex = 0;
-let current = 1;
-let allowTap = false;
-
-// NO button behaviour
-noBtn.addEventListener('mouseover', () => {
-  shrink -= 0.1;
-  noBtn.style.transform = `scale(${shrink})`;
-  noBtn.innerText = cuteTexts[textIndex % cuteTexts.length];
-  textIndex++;
-});
-
-// YES button behaviour
-yesBtn.onclick = (e) => {
-  e.stopPropagation(); // IMPORTANT FIX
-  switchScreen(1, 2);
-  startHearts();
-  allowTap = true;
-};
-
-// Page tap navigation
-document.body.addEventListener('click', () => {
-  if (!allowTap) return;
-
-  if (current === 2) switchScreen(2, 3);
-  else if (current === 3) switchScreen(3, 4);
-  else if (current === 4) {
-    switchScreen(4, 5);
-    startSlideshow();
-    allowTap = false;
-  }
-});
-
-function switchScreen(from, to) {
-  document.getElementById(`screen${from}`).classList.remove('active');
-  document.getElementById(`screen${to}`).classList.add('active');
-  current = to;
-}
-
-function startHearts() {
-  setInterval(() => {
-    const heart = document.createElement('div');
-    heart.className = 'heart';
-    heart.innerText = '💖';
-    heart.style.left = Math.random() * 100 + 'vw';
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000);
-  }, 400);
-}
-
-function startSlideshow() {
-  const imgs = document.querySelectorAll('.slideshow img');
-  let i = 0;
-  imgs[i].style.display = 'block';
-  setInterval(() => {
-    imgs[i].style.display = 'none';
-    i = (i + 1) % imgs.length;
-    imgs[i].style.display = 'block';
-  }, 2500);
-}
-</script>
-
-</body>
-</html>
+<!-- SCREEN 2 -->
+<div class="screen" id="screen
