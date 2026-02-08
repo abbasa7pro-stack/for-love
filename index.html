@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Abbas ❤️ Zainy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Zainy 💖</title>
 
 <style>
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
 body {
   margin: 0;
   height: 100vh;
-  font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #ff9a9e, #fad0c4);
   display: flex;
   justify-content: center;
@@ -16,146 +21,185 @@ body {
   overflow: hidden;
 }
 
-#screen {
+.screen {
+  display: none;
   text-align: center;
-  z-index: 2;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
 }
 
-#question {
-  font-size: 22px;
-  margin-bottom: 20px;
+.active {
+  display: block;
 }
 
-#buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
+h1, p {
+  color: #fff;
 }
 
 button {
-  padding: 14px 30px;
-  font-size: 18px;
-  border-radius: 30px;
+  padding: 12px 22px;
+  font-size: 16px;
   border: none;
+  border-radius: 30px;
   cursor: pointer;
+  margin: 10px;
 }
 
-#yes {
+#yesBtn {
   background: #ff4d6d;
   color: white;
 }
 
-#no {
-  background: #ccc;
-  position: relative;
-  transition: transform 0.2s ease;
+#noBtn {
+  background: white;
+  color: #ff4d6d;
+  transition: all 0.3s ease;
 }
 
-/* Slideshow */
-#slideshow {
-  display: none;
+.heart {
   position: fixed;
-  inset: 0;
-  background: black;
-  justify-content: center;
-  align-items: center;
-  z-index: 5;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp 5s linear infinite;
 }
 
-#slideshow img {
-  max-width: 90%;
-  max-height: 90%;
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+.tap {
+  margin-top: 20px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.slideshow img {
+  width: 100%;
   border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-  transition: opacity 0.8s ease;
+  display: none;
 }
 </style>
 </head>
 
 <body>
 
-<div id="screen">
-  <h1>Zainy 💖</h1>
-  <p id="question">Will you be my Valentine, Zainy? 💖</p>
+<!-- SCREEN 1 -->
+<div class="screen active" id="screen1">
+  <h1>Will you be my Valentine, Zainy? 💖</h1>
+  <button id="yesBtn">Yes 💕</button>
+  <button id="noBtn">No 🙈</button>
+</div>
 
-  <div id="buttons">
-    <button id="yes">Yes 💕</button>
-    <button id="no">No 🙈</button>
+<!-- SCREEN 2 -->
+<div class="screen" id="screen2">
+  <p>
+    Zainy, I am not very good with English,  
+    but my feelings for you are very real.  
+    You make me smile without trying,  
+    and talking to you makes my day better.  
+    I don’t need anything perfect,  
+    I just want you.
+  </p>
+  <div class="tap">(Tap anywhere)</div>
+</div>
+
+<!-- SCREEN 3 -->
+<div class="screen" id="screen3">
+  <h1>HAPPY PROPOSE DAY 💖</h1>
+  <div class="tap">(Tap anywhere)</div>
+</div>
+
+<!-- SCREEN 4 -->
+<div class="screen" id="screen4">
+  <p>
+    Sorry this came a little late 😅  
+    I had some technical issues,  
+    but my feelings were always on time.
+  </p>
+  <div class="tap">(Tap anywhere)</div>
+</div>
+
+<!-- SCREEN 5 -->
+<div class="screen" id="screen5">
+  <div class="slideshow">
+    <img src="photo1.jpeg">
+    <img src="photo2.jpeg">
+    <img src="photo3.jpeg">
+    <img src="photo4.jpeg">
+    <img src="photo5.jpeg">
+    <img src="photo6.jpeg">
+    <img src="photo7.jpeg">
+    <img src="photo8.jpeg">
+    <img src="photo9.jpeg">
   </div>
 </div>
 
-<div id="slideshow">
-  <img id="img" src="photo1.jpeg">
-</div>
-
 <script>
-const noBtn = document.getElementById("no");
-const yesBtn = document.getElementById("yes");
-const screen = document.getElementById("screen");
-const slideshow = document.getElementById("slideshow");
-const img = document.getElementById("img");
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
 
 const cuteTexts = [
-  "Awww no? 🥺",
-  "Think again 😭",
-  "Pleaseee 💔",
-  "Don’t break my heart 😩",
-  "Zainy 😜",
-  "Not this one 😏"
+  "Nice try 😏",
+  "Still no? 🥺",
+  "Come on Zainy 💖",
+  "You know the answer 😌",
+  "Just say yes 🙈"
 ];
 
-let scale = 1;
-let attempts = 0;
+let shrink = 1;
+let textIndex = 0;
 
-["mouseenter", "touchstart"].forEach(evt => {
-  noBtn.addEventListener(evt, () => {
-    attempts++;
-
-    if (attempts >= 3 && attempts % 3 === 0) {
-      noBtn.textContent = "Nice try 😏";
-    } else {
-      noBtn.textContent =
-        cuteTexts[Math.floor(Math.random() * cuteTexts.length)];
-    }
-
-    scale -= 0.08;
-    if (scale < 0.3) scale = 0.3;
-
-    noBtn.style.position = "absolute";
-    noBtn.style.transform = `scale(${scale})`;
-    noBtn.style.left = Math.random() * 80 + "vw";
-    noBtn.style.top = Math.random() * 80 + "vh";
-  });
+noBtn.addEventListener('mouseover', () => {
+  shrink -= 0.1;
+  noBtn.style.transform = `scale(${shrink})`;
+  noBtn.innerText = cuteTexts[textIndex % cuteTexts.length];
+  textIndex++;
 });
 
-const photos = [
-  "photo1.jpeg","photo2.jpeg","photo3.jpeg",
-  "photo4.jpeg","photo5.jpeg","photo6.jpeg",
-  "photo7.jpeg","photo8.jpeg","photo9.jpeg"
-];
+yesBtn.onclick = () => {
+  switchScreen(1, 2);
+  startHearts();
+};
 
-let i = 0;
-
-yesBtn.addEventListener("click", () => {
-  screen.innerHTML = `
-    <h1>YAYYYY 🎉💖</h1>
-    <p>Abbas & Zainy ♾️</p>
-  `;
-
-  setTimeout(() => {
-    screen.style.display = "none";
-    slideshow.style.display = "flex";
-
-    setInterval(() => {
-      i = (i + 1) % photos.length;
-      img.style.opacity = 0;
-      setTimeout(() => {
-        img.src = photos[i];
-        img.style.opacity = 1;
-      }, 400);
-    }, 2500);
-  }, 5000);
+document.body.addEventListener('click', () => {
+  if (current === 2) switchScreen(2, 3);
+  else if (current === 3) switchScreen(3, 4);
+  else if (current === 4) {
+    switchScreen(4, 5);
+    startSlideshow();
+  }
 });
+
+let current = 1;
+function switchScreen(from, to) {
+  document.getElementById(`screen${from}`).classList.remove('active');
+  document.getElementById(`screen${to}`).classList.add('active');
+  current = to;
+}
+
+function startHearts() {
+  setInterval(() => {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.innerText = '💖';
+    heart.style.left = Math.random() * 100 + 'vw';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+  }, 400);
+}
+
+function startSlideshow() {
+  const imgs = document.querySelectorAll('.slideshow img');
+  let i = 0;
+  imgs[i].style.display = 'block';
+  setInterval(() => {
+    imgs[i].style.display = 'none';
+    i = (i + 1) % imgs.length;
+    imgs[i].style.display = 'block';
+  }, 2500);
+}
 </script>
 
 </body>
