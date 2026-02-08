@@ -14,23 +14,37 @@
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background: linear-gradient(135deg, #ff6ec4, #7873f5, #ffd86f);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
 }
 
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .screen {
   display: none;
   text-align: center;
-  padding: 20px;
+  padding: 22px;
   width: 100%;
   max-width: 420px;
+  animation: fadeIn 0.6s ease;
 }
 
 .active {
   display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 h1, p {
@@ -38,8 +52,12 @@ h1, p {
   line-height: 1.6;
 }
 
+p {
+  font-size: 16px;
+}
+
 button {
-  padding: 12px 24px;
+  padding: 12px 26px;
   font-size: 16px;
   border: none;
   border-radius: 30px;
@@ -50,10 +68,11 @@ button {
 #yesBtn {
   background: #ff4d6d;
   color: white;
+  box-shadow: 0 0 15px rgba(255,77,109,0.6);
 }
 
 #noBtn {
-  background: white;
+  background: #fff;
   color: #ff4d6d;
   transition: all 0.3s ease;
 }
@@ -86,28 +105,31 @@ button {
 
 <body>
 
-<!-- SCREEN 1 -->
+<!-- SCREEN 1 : PARAGRAPH -->
 <div class="screen active" id="screen1">
+  <p>
+    Zainy…  
+    I don’t know how to write big fancy words,  
+    but I know how you make me feel.  
+
+    You make my normal days feel special,  
+    and my bad days feel lighter.  
+    Talking to you brings a smile without trying.  
+
+    I may not be perfect,  
+    but my feelings for you are pure and real.  
+    I just want to care for you,  
+    make you happy,  
+    and choose you every single day.
+  </p>
+  <div class="tap">(Tap anywhere)</div>
+</div>
+
+<!-- SCREEN 2 : QUESTION -->
+<div class="screen" id="screen2">
   <h1>Will you be my Valentine, Zainy? 💖</h1>
   <button id="yesBtn">Yes 💕</button>
   <button id="noBtn">No 🙈</button>
-</div>
-
-<!-- SCREEN 2 -->
-<div class="screen" id="screen2">
-  <p>
-    Zainy, I am not very good with words,  
-    but my feelings for you are true.  
-    You make me smile without even trying,  
-    and talking to you makes my day feel better.  
-
-    I don’t promise anything fancy,  
-    I just promise to care for you,  
-    to be honest with you,  
-    and to choose you every single day.  
-    This is from my heart.
-  </p>
-  <div class="tap">(Tap anywhere)</div>
 </div>
 
 <!-- SCREEN 3 -->
@@ -121,12 +143,12 @@ button {
   <p>
     Sorry this came a little late 😅  
     There were some technical issues,  
-    but my feelings were always on time.
+    but my feelings were never late.
   </p>
   <div class="tap">(Tap anywhere)</div>
 </div>
 
-<!-- SCREEN 5 -->
+<!-- SCREEN 5 : SLIDESHOW -->
 <div class="screen" id="screen5">
   <div class="slideshow">
     <img src="photo1.jpeg">
@@ -147,52 +169,47 @@ const yesBtn = document.getElementById("yesBtn");
 
 const cuteTexts = [
   "Nice try 😏",
-  "Still no? 🥺",
-  "Come on Zainy 💖",
-  "You know the answer 😌",
-  "Just say yes 🙈"
+  "Not allowed 🙈",
+  "You know the answer 💖",
+  "Almost there 😌",
+  "Just say yes 😭"
 ];
 
 let shrink = 1;
 let textIndex = 0;
 let current = 1;
-let allowTap = false;
+let allowTap = true;
 
-// NO button
-noBtn.addEventListener("mouseover", () => {
+// NO button fun
+noBtn.addEventListener("mouseenter", () => {
   shrink -= 0.1;
   noBtn.style.transform = `scale(${shrink})`;
   noBtn.innerText = cuteTexts[textIndex % cuteTexts.length];
   textIndex++;
 });
 
-// YES button (ULTRA SAFE)
+// YES button (mobile-safe)
 yesBtn.addEventListener("click", (e) => {
   e.preventDefault();
   e.stopPropagation();
 
-  switchScreen(1, 2);
+  allowTap = false;
+  switchScreen(2, 3);
   startHearts();
 
-  // DELAY tap enable (KEY FIX)
-  setTimeout(() => {
-    allowTap = true;
-  }, 400);
+  setTimeout(() => allowTap = true, 400);
 });
 
-// Page tap navigation
-document.addEventListener("click", () => {
+// Page taps (IGNORE button taps)
+document.addEventListener("click", (e) => {
   if (!allowTap) return;
+  if (e.target.tagName === "BUTTON") return;
 
-  if (current === 2) {
-    switchScreen(2, 3);
-    allowTap = false;
-    setTimeout(() => allowTap = true, 300);
+  if (current === 1) {
+    switchScreen(1, 2);
   }
   else if (current === 3) {
     switchScreen(3, 4);
-    allowTap = false;
-    setTimeout(() => allowTap = true, 300);
   }
   else if (current === 4) {
     switchScreen(4, 5);
