@@ -14,16 +14,16 @@
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(135deg, #ff6ec4, #7873f5, #ffd86f);
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
   background-size: 400% 400%;
-  animation: gradientMove 12s ease infinite;
+  animation: bg 12s ease infinite;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
 }
 
-@keyframes gradientMove {
+@keyframes bg {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
@@ -35,50 +35,41 @@ body {
   padding: 22px;
   width: 100%;
   max-width: 420px;
-  animation: fadeIn 0.6s ease;
+  color: white;
 }
 
-.active {
-  display: block;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-h1, p {
-  color: #fff;
-  line-height: 1.6;
-}
+.active { display: block; }
 
 p {
   font-size: 16px;
+  line-height: 1.7;
+}
+
+h1 {
+  font-size: 24px;
 }
 
 button {
-  padding: 12px 26px;
+  padding: 12px 28px;
   font-size: 16px;
   border: none;
   border-radius: 30px;
-  cursor: pointer;
-  margin: 10px;
+  margin: 12px;
 }
 
 #yesBtn {
   background: #ff4d6d;
   color: white;
-  box-shadow: 0 0 15px rgba(255,77,109,0.6);
 }
 
 #noBtn {
-  background: #fff;
+  background: white;
   color: #ff4d6d;
-  transition: all 0.3s ease;
+  position: absolute;
 }
 
 .tap {
-  margin-top: 18px;
+  margin-top: 15px;
   font-size: 14px;
   opacity: 0.85;
 }
@@ -105,27 +96,26 @@ button {
 
 <body>
 
-<!-- SCREEN 1 : PARAGRAPH -->
+<!-- SCREEN 1 -->
 <div class="screen active" id="screen1">
   <p>
-    Zainy…  
-    I don’t know how to write big fancy words,  
-    but I know how you make me feel.  
+    Zainy 💗  
+    You somehow make simple moments feel special.  
+    Even small talks with you stay in my mind.  
 
-    You make my normal days feel special,  
-    and my bad days feel lighter.  
-    Talking to you brings a smile without trying.  
+    I like the way you exist in my days —  
+    quietly, sweetly, and naturally.  
+    You make me smile without effort.  
 
-    I may not be perfect,  
-    but my feelings for you are pure and real.  
-    I just want to care for you,  
-    make you happy,  
-    and choose you every single day.
+    I don’t promise perfection,  
+    but I promise honesty, care,  
+    and choosing you again and again.  
+    This comes straight from my heart.
   </p>
   <div class="tap">(Tap anywhere)</div>
 </div>
 
-<!-- SCREEN 2 : QUESTION -->
+<!-- SCREEN 2 -->
 <div class="screen" id="screen2">
   <h1>Will you be my Valentine, Zainy? 💖</h1>
   <button id="yesBtn">Yes 💕</button>
@@ -141,14 +131,14 @@ button {
 <!-- SCREEN 4 -->
 <div class="screen" id="screen4">
   <p>
-    Sorry this came a little late 😅  
-    There were some technical issues,  
-    but my feelings were never late.
+    Sorry this reached you a little late 😅  
+    Some technical issues happened,  
+    but my feelings were always on time.
   </p>
   <div class="tap">(Tap anywhere)</div>
 </div>
 
-<!-- SCREEN 5 : SLIDESHOW -->
+<!-- SCREEN 5 -->
 <div class="screen" id="screen5">
   <div class="slideshow">
     <img src="photo1.jpeg">
@@ -164,53 +154,52 @@ button {
 </div>
 
 <script>
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-
-const cuteTexts = [
-  "Nice try 😏",
-  "Not allowed 🙈",
-  "You know the answer 💖",
-  "Almost there 😌",
-  "Just say yes 😭"
-];
-
-let shrink = 1;
-let textIndex = 0;
 let current = 1;
 let allowTap = true;
 
-// NO button fun
-noBtn.addEventListener("mouseenter", () => {
-  shrink -= 0.1;
-  noBtn.style.transform = `scale(${shrink})`;
-  noBtn.innerText = cuteTexts[textIndex % cuteTexts.length];
-  textIndex++;
-});
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
 
-// YES button (mobile-safe)
+const noTexts = [
+  "Hey 😳",
+  "Missed me 😌",
+  "Not that one 🙈",
+  "Almost 💖",
+  "Say yes 😭"
+];
+
+let noIndex = 0;
+
+// MOVE NO BUTTON (MOBILE FIX)
+function moveNoButton() {
+  const x = Math.random() * (window.innerWidth - 120);
+  const y = Math.random() * (window.innerHeight - 120);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+  noBtn.innerText = noTexts[noIndex % noTexts.length];
+  noIndex++;
+}
+
+noBtn.addEventListener("click", moveNoButton);
+noBtn.addEventListener("touchstart", moveNoButton);
+
+// YES BUTTON
 yesBtn.addEventListener("click", (e) => {
-  e.preventDefault();
   e.stopPropagation();
-
   allowTap = false;
   switchScreen(2, 3);
   startHearts();
-
   setTimeout(() => allowTap = true, 400);
 });
 
-// Page taps (IGNORE button taps)
+// TAP FLOW
 document.addEventListener("click", (e) => {
   if (!allowTap) return;
   if (e.target.tagName === "BUTTON") return;
 
-  if (current === 1) {
-    switchScreen(1, 2);
-  }
-  else if (current === 3) {
-    switchScreen(3, 4);
-  }
+  if (current === 1) switchScreen(1, 2);
+  else if (current === 3) switchScreen(3, 4);
   else if (current === 4) {
     switchScreen(4, 5);
     startSlideshow();
@@ -226,13 +215,13 @@ function switchScreen(from, to) {
 
 function startHearts() {
   setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000);
-  }, 450);
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerText = "💖";
+    h.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 5000);
+  }, 500);
 }
 
 function startSlideshow() {
@@ -244,7 +233,7 @@ function startSlideshow() {
     imgs[i].style.display = "none";
     i = (i + 1) % imgs.length;
     imgs[i].style.display = "block";
-  }, 2600);
+  }, 2500);
 }
 </script>
 
